@@ -1,0 +1,21 @@
+<html>
+	<head>
+		<div style="text-align:center">
+			<canvas id="myCanvas" width="500" height="500" style="border:1px solid #d3d3d3;"></canvas>
+			<script src="{{url_for('static', filename='render.js')}}"></script>
+			<script src="{{url_for('static', filename='jquery-3.4.1.min.js')}}"></script>
+		</div>
+	</head>
+	
+	<body>
+		<div style="text-align:center;">
+			Enter source: <input type="text" id="source">
+			<br>
+			Enter destination: <input type="text" id="dest">
+			<br>
+			<button id="find" onclick="graph()">find minimum path</button>
+		</div>
+		
+	</body>
+
+</html>
