@@ -82,7 +82,7 @@ function graph(){
 	var dest = document.getElementById("dest").value;
 	
 	visited = [];
-	shortest_path_dict = {};
+	shortest_paths_dict = {};
 	visit = [];
 	changed={};
 	track = {};
@@ -132,22 +132,32 @@ function graph(){
 				conn_but_not_visited = connected.filter( ( el ) => !visited.includes( el ) );
 				console.log("connected but not visited nodes are: ",conn_but_not_visited);
 				for (var p=0;p<conn_but_not_visited.length;p++ ){
-					if (dist_frm_src[conn_but_not_visited[p]]>dist_frm_src[visit[n]]+1){
-						dist_frm_src[conn_but_not_visited[p]] = dist_frm_src[visit[n]]+1;
-						changed[conn_but_not_visited[p]] = [dist_frm_src[visit[n]]+1, visit[n]];
+					if (distance(mat[conn_but_not_visited[p]],mat[visit[n]])>140){
+						u = 2;
+					}
+					else{
+						u=1;
+					}
+					if (dist_frm_src[conn_but_not_visited[p]]>dist_frm_src[visit[n]]+u){
+						dist_frm_src[conn_but_not_visited[p]] = dist_frm_src[visit[n]]+u;
+						changed[conn_but_not_visited[p]] = [dist_frm_src[visit[n]]+u, visit[n]];
+						console.log("changed: ", dist_frm_src[conn_but_not_visited[p]], conn_but_not_visited[p])
+					}
+					else{
+						continue;
 					}
 				}
 				visited.push(visit[n]);
 				break;
 			}
 			else{
-				console.log("value is higher, so no change...!!");
+				console.log("value of: ",visit[n],", is higher, so no change...!!");
 			}
 		}
 		console.log("distance from source is: ", dist_frm_src);
 		console.log("visited nodes: ", visited);
 		console.log("changed nodes are: ", changed);
-		s=0;
+		/* s=0;
 		temp=[];
 		for (key in changed){
 			temp.push(key);
@@ -156,22 +166,25 @@ function graph(){
 		s=[0];
 		for (key in changed){
 			if (changed[key][s]==mini){
-				shortest_path_dict[key] = changed[key]; 
+				shortest_paths_dict[key] = changed[key]; 
 			}
+		} */
+
+		for (key in changed){
+			shortest_paths_dict[key] = changed[key];
 		}
-		console.log("changed nodes are:")
-		console.log("Shortest path among nodes: ", shortest_path_dict);
+		console.log("Shortest path among nodes: ", shortest_paths_dict);
 		changed={};
 		visit = [];
-				m++;
+		m++;
 	}
 	console.log("shortest distance is: ", dist_frm_src);
-	console.log("the shortest path dictionary is: ", shortest_path_dict);
+	console.log("the shortest path dictionary is: ", shortest_paths_dict);
 	path=[];
 	path.push(dest);
 	while (dest != source){
-		path.push(shortest_path_dict[dest][1]);
-		dest = shortest_path_dict[dest][1];
+		path.push(shortest_paths_dict[dest][1]);
+		dest = shortest_paths_dict[dest][1];
 	}
 	console.log("the sortest path is: ", path);
 	console.log("drawing path");
@@ -211,5 +224,11 @@ function not_visited_node(node){
 	}
 	//console.log("not started")
 	return true;
+}
+
+function distance(node1, node2){
+	//console.log(node1);
+	//console.log(node2);
+	return Math.sqrt(Math.pow((node2[0]-node1[0]), 2) + Math.pow((node2[1]-node1[1]), 2));
 }
 
