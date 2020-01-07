@@ -189,7 +189,7 @@ function graph(){
 	console.log("the sortest path is: ", path);
 	console.log("drawing path");
 	ctx.beginPath();
-		ctx.strokeStyle = 'blue';
+		ctx.strokeStyle = 'green';
 		ctx.lineWidth = 5;
 		ctx.moveTo(mat[path[0]][0], mat[path[0]][1]);
 		for (var t= 1;t<path.length;t++){
